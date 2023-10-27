@@ -9,46 +9,38 @@ export default function Main() {
 
   // VALOR INICIAL
   const [letras, setLetras] = useState(WORDLINE);
+  // VIDAS
+  const [life, setLife] = useState(6);
 
-  // MODIFICA SI LA LETRA ES LA CORRECTA
+  // AGREGA LA LETRA SI ES LA CORRECTA
   const handleCLick = (element) => {
-    // if (WORD.includes(element)) {
+    const position = [];
+    const newLetras = [...letras];
 
-    //   const indexWORD = WORD.indexOf(element);
-    //   const newLetras = [...letras];
-    //   newLetras.splice(indexWORD, 1, element);
-    //   setLetras(newLetras);
-    // }
-    // CHECAR COMO VALIDAR DOS DATOS
-    for (let e of WORD) {
-      if (e === element) {
-        console.log(e);
-        // console.log(e, " - ", element);
-        const indexWORD = WORD.indexOf(element);
-        console.log(indexWORD);
-        const newLetras = [...letras];
-        newLetras.splice(indexWORD, 1, element);
-        setLetras(newLetras);
+    for (let index = 0; index < WORD.length; index++) {
+      if (WORD[index] === element) {
+        position.push(index);
       }
     }
-    // WORD.forEach((e) => {
-    //   if (e === element) {
-    //     console.log(e, " - ", element);
-    //     const indexWORD = WORD.indexOf(element);
-    //     console.log(indexWORD);
-    //     const newLetras = [...letras];
-    //     newLetras.splice(indexWORD, 1, element);
-    //     setLetras(newLetras);
-    //   }
-    // });
+    if (position.length === 0 && life > 0) {
+      const count = life - 1;
+      setLife(count);
+    }
+    for (const iterator of position) {
+      newLetras.splice(iterator, 1, element);
+      setLetras(newLetras);
+    }
   };
 
   useEffect(() => {
-    console.log(letras);
-  }, [letras]);
+    if (life === 0) {
+      alert("you loose, try again");
+    }
+  }, [life]);
 
   return (
     <>
+      <h1 className="text-black text-xl">VIDAS = {life}</h1>
       <div className={`flex flex-row gap-2`}>
         {letras.map(function (e, index) {
           return (
